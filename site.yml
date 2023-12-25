@@ -5,12 +5,14 @@
   pre_tasks:
 
   - name: install updates (CentOS)
+    tags: always
     yum:
       update_only: yes
       update_cache: yes
     when: ansible_distribution == "CentOS"
 
   - name: install updates (Ubuntu)
+    tags: always
     apt:
       upgrade: dist
       update_cache: yes
@@ -21,6 +23,7 @@
   tasks:
 
   - name: install apache2 and php package for ubuntu server
+    tags: ubuntu, apache, apache2, php
     apt:
       name: 
         - apache2
@@ -31,6 +34,7 @@
 
 
   - name: install apache2 and php package for ubuntu CentOS
+    tags: centos, apache, httpd, php
     yum:    
       name: 
         - httpd
@@ -44,12 +48,14 @@
   tasks:
 
   - name: install mysql package for CentOS
+    tags: centos, db, mysql
     yum:
       name: mysql
       state: latest
     when: ansible_distribution == "CentOS"
 
   - name: install mysql package for Ubuntu
+    tags: ubuntu, db, mysql
     apt:
       name: mysql-server
       state: latest
