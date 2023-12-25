@@ -1,4 +1,10 @@
-userver1@192.168.100.6
-userver2@192.168.100.4
-userver3@192.168.100.7
+[web_servers]
+userver1@192.168.100.6 
 root@192.168.100.11
+
+[db_servers]
+userver3@192.168.100.7
+
+[file_servers] 
+userver2@192.168.100.4
+ 
