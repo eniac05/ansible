@@ -19,3 +19,4 @@
   when: ansible_distribution == "Ubuntu"
   notify: restart_mysql
 
+- include: ufw_mysql.yml

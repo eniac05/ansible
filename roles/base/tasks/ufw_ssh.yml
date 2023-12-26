@@ -1,0 +1,17 @@
+- name: Install ufw
+  package:
+      name: ufw
+      state: latest
+  when: ansible_distribution == "Ubuntu"
+- name: Allow SSH from specific IP addresses
+  ufw:
+      rule: allow
+      port: '22'
+      from_ip: "{{ ip_workstation }}"
+  when: ansible_distribution == "Ubuntu"
+
+
+- name: Enable UFW
+  ufw:
+      state: enabled
+  when: ansible_distribution == "Ubuntu"

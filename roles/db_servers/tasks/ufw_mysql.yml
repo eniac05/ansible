@@ -1,0 +1,10 @@
+- name: Get allowed IP addresses from inventory group web_servers to mysql
+  set_fact:
+      allowed_ip_addresses: "{{ groups['web_servers'] | map('extract', hostvars, ['ip_host']) | list }}"
+
+- name: Allow SSH from specific IP addresses
+  ufw:
+      rule: allow
+      port: '3306'
+      from_ip: "{{ item }}"
+  loop: "{{ allowed_ip_addresses }}"
