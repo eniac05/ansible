@@ -1,4 +1,15 @@
+- name: set system timezone
+  timezone:
+     name: Asia/Makassar
+
+- name: Install the EPEL repository package for CentOS
+  yum:
+     name: epel-release
+     state: present
+  when: ansible_distribution == "CentOS"
+
 - name: install htop
   tags: base
   package:
      name: htop
+  #when: ansible_distribution == "Ubuntu"

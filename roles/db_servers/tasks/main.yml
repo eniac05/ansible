@@ -1,13 +1,21 @@
-- name: install mysql package for CentOS
-  tags: centos, db, mysql
-  yum:
-    name: mysql
+- name: install mysql package
+  tags: db, mysql
+  package:
+    name: "{{ db_package_name }}"
     state: latest
-  when: ansible_distribution == "CentOS"
 
-- name: install mysql package for Ubuntu
-  tags: ubuntu, db, mysql
-  apt:
-    name: mysql-server
-    state: latest
+- name: update mysql.cnf, comment change bind to local
+  tags: mysql.conf
+  blockinfile:
+      path:  /etc/mysql/mysql.conf.d/mysqld.cnf
+      marker: "{mark}"
+      marker_begin: "# localhost which is more compatible and is not less secure."
+      marker_end: "#"
+      block: |-
+        #bind-address            = 127.0.0.1
+        #mysqlx-bind-address     = 127.0.0.1
+      state: present
+      backup: yes
   when: ansible_distribution == "Ubuntu"
+  notify: restart_mysql
+

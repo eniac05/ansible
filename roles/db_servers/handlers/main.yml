@@ -1,0 +1,6 @@
+- name: restart_mysql 
+  tags: restart_mysql
+  service:
+      name: "{{ db_service }}"
+      state: restarted
+  
