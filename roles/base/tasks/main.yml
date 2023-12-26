@@ -1,0 +1,4 @@
+- name: install htop
+  tags: base
+  package:
+     name: htop

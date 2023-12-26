@@ -1,0 +1,13 @@
+- name: install mysql package for CentOS
+  tags: centos, db, mysql
+  yum:
+    name: mysql
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: install mysql package for Ubuntu
+  tags: ubuntu, db, mysql
+  apt:
+    name: mysql-server
+    state: latest
+  when: ansible_distribution == "Ubuntu"

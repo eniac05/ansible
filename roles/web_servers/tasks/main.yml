@@ -1,0 +1,59 @@
+- name: install apache2 and php package for ubuntu server
+  tags: ubuntu, apache, apache2, php
+  apt:
+      name: 
+        - apache2
+        - libapache2-mod-php 
+      state: latest
+      update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: change allow overide in apache.conf
+  tags: apache2.conf
+  blockinfile:
+      path: /etc/apache2/apache2.conf
+      marker: "{mark}"
+      marker_begin: "<Directory /var/www/>"
+      marker_end: "</Directory>"
+      block: |-
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+      state: present
+      backup: yes
+  when: ansible_distribution == "Ubuntu"
+  register: apache2
+
+- name: restart apache2 (Ubuntu)
+  tags: apache2.conf
+  service:
+      name: apache2
+      state: restarted
+  when: apache2.changed
+
+- name: install apache2 and php package for CentOS
+  tags: centos, apache, httpd, php
+  yum:    
+      name: 
+        - httpd
+        - php 
+      state: latest
+      update_cache: yes
+  when: ansible_distribution == "CentOS" 
+  
+- name: start httpd (CentOS)
+  tags: apache,centos,httpd,httpd_start
+  service:
+       name: httpd
+       state: started
+       enabled: yes
+  when: ansible_distribution == "CentOS" 
+
+- name: Copy default html file for site
+  tags: apache,apache2,httpd,file_index
+  copy:
+       src: default_site.html
+       dest: /var/www/html/index.html
+       owner: root
+       group: root
+       mode: 0644
